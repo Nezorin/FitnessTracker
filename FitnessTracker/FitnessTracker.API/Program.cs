@@ -10,8 +10,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FitnessTrackerContext>(options =>
-  options.UseSqlite("Data Source=FitnessTracker.db"));
+    options.UseSqlite("Data Source=FitnessTracker.db"));
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", policyBuilder =>
+    {
+        policyBuilder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,6 +27,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 

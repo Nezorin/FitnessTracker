@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FitnessTracker.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class FitnessTrackerController : ControllerBase
     {
         private readonly FitnessTrackerContext _context;
