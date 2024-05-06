@@ -4,17 +4,31 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import NotFoundPage from "./NotFoundPage";
 import ExercisesPage from "./ExercisesPage";
+import HomePage from "./HomePage";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <App />,
     errorElement: <NotFoundPage />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/Exercises",
+        element: <ExercisesPage />,
+      },
+    ],
   },
-  {
-    path: "/Exercises",
-    element: <ExercisesPage />,
-  },
+  // {
+  //   path: "/HomePage",
+  //   element: <HomePage />,
+  // },
+  // {
+  //   path: "/Exercises",
+  //   element: <ExercisesPage />,
+  // },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
