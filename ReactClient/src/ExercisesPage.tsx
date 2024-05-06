@@ -22,11 +22,12 @@ export default function ExercisesPage() {
 
   const toast = useRef<Toast>(null);
 
+  const fetchExercises = async () => {
+    const fetchedExercises = await getExercises();
+    setExercises(fetchedExercises);
+  };
+
   useEffect(() => {
-    const fetchExercises = async () => {
-      const fetchedExercises = await getExercises();
-      setExercises(fetchedExercises);
-    };
     fetchExercises();
   }, []);
 
@@ -66,7 +67,7 @@ export default function ExercisesPage() {
   const createNewExercise = async () => {
     const result = await createExercise(newExerciseName!);
     if (result) {
-      //Add exercises to list
+      fetchExercises();
     } else {
       toast.current!.show({
         severity: "error",
@@ -96,11 +97,11 @@ export default function ExercisesPage() {
   const actionBodyTemplate = (rowData: Exercise) => {
     return (
       <React.Fragment>
-        {/* <Button
+        <Button
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success mr-2"
-          onClick={() => editExercise(rowData)}
-        /> */}
+          onClick={() => handleDeleteClick(rowData.id)}
+        />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
@@ -120,7 +121,6 @@ export default function ExercisesPage() {
         onClick={addExercise}
       />
       <DataTable value={exercises} tableStyle={{ minWidth: "50rem" }}>
-        <Column selectionMode="multiple"></Column>
         <Column field="id" sortable header="Id"></Column>
         <Column field="name" sortable header="Name"></Column>
         <Column field="description" header="Description"></Column>
