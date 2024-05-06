@@ -1,4 +1,6 @@
-﻿using FitnessTracker.DAL;
+﻿using AutoMapper;
+using FitnessTracker.API.DTOs;
+using FitnessTracker.DAL;
 using FitnessTracker.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +12,15 @@ namespace FitnessTracker.API.Controllers
     public class FitnessTrackerController : ControllerBase
     {
         private readonly FitnessTrackerContext _context;
+        private readonly IMapper _mapper;
 
-        public FitnessTrackerController(FitnessTrackerContext context)
+        public FitnessTrackerController(FitnessTrackerContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         [HttpPost(Name = "AddExercise")]
-        public async Task<IActionResult> AddExercise([FromBody]string name)
+        public async Task<IActionResult> AddExercise([FromBody] string name)
         {
             Exercise exercise = new()
             {
@@ -28,9 +32,9 @@ namespace FitnessTracker.API.Controllers
         }
 
         [HttpGet(Name = "GetExercises")]
-        public async Task<IEnumerable<Exercise>> GetExercises()
+        public async Task<IEnumerable<ExerciseResponse>> GetExercises()
         {
-            return await _context.Exercises.ToListAsync();
+            return _mapper.Map<IEnumerable<ExerciseResponse>>(await _context.Exercises.ToListAsync());
         }
 
         [HttpPatch("{id}")]

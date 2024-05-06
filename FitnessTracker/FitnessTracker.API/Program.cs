@@ -1,3 +1,4 @@
+using FitnessTracker.API.MapperProfiles;
 using FitnessTracker.DAL;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FitnessTrackerContext>(options =>
     options.UseSqlite("Data Source=FitnessTracker.db"));
+
+builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 builder.Services.AddCors(opt =>
 {
