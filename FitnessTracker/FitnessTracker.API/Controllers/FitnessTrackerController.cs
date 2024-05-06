@@ -15,14 +15,8 @@ namespace FitnessTracker.API.Controllers
         {
             _context = context;
         }
-        [HttpGet(Name = "GetExercises")]
-        public async Task<IEnumerable<Exercise>> GetExercises()
-        {
-            return await _context.Exercises.ToListAsync();
-        }
-
         [HttpPost(Name = "AddExercise")]
-        public async Task<IActionResult> AddExercise(string name)
+        public async Task<IActionResult> AddExercise([FromBody]string name)
         {
             Exercise exercise = new()
             {
@@ -31,6 +25,47 @@ namespace FitnessTracker.API.Controllers
             await _context.Exercises.AddAsync(exercise);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpGet(Name = "GetExercises")]
+        public async Task<IEnumerable<Exercise>> GetExercises()
+        {
+            return await _context.Exercises.ToListAsync();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateExerciseName(int id, string newName)
+        {
+            if (string.IsNullOrEmpty(newName))
+            {
+                return BadRequest("New name cannot be null or empty");
+            }
+
+            var exercise = await _context.Exercises.FindAsync(id);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            exercise.Name = newName;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteExercise(int id)
+        {
+            var exercise = await _context.Exercises.FindAsync(id);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            _context.Exercises.Remove(exercise);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
