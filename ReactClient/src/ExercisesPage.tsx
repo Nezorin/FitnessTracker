@@ -9,6 +9,7 @@ import React from "react";
 import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
+import "./ExercisesPage.css";
 
 export default function ExercisesPage() {
   let emptyExercise: Exercise = {
@@ -20,6 +21,7 @@ export default function ExercisesPage() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [newExercise, setNewExercise] = useState<Exercise>(emptyExercise);
   const [exerciseDialog, setExerciseDialog] = useState(false);
+  const [globalFilter, setGlobalFilter] = useState<string>();
 
   const toast = useRef<Toast>(null);
 
@@ -90,6 +92,20 @@ export default function ExercisesPage() {
     }
   };
 
+  const header = (
+    <div className="table-header">
+      <h5 className="mx-0 my-1">Manage Exercises</h5>
+      <span className="p-input-icon-left">
+        {/* <i className="pi pi-search" /> */}
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilter((e.target as HTMLInputElement).value)}
+          placeholder="Search..."
+        />
+      </span>
+    </div>
+  );
+
   const exerciseDialogFooter = (
     <React.Fragment>
       <Button
@@ -125,7 +141,7 @@ export default function ExercisesPage() {
   };
 
   return (
-    <div>
+    <div className="datatable-exercises">
       <Toast ref={toast} />
       <Button
         label="New"
@@ -143,6 +159,8 @@ export default function ExercisesPage() {
         rows={10}
         rowsPerPageOptions={[5, 10, 25]}
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        globalFilter={globalFilter}
+        header={header}
       >
         <Column field="id" sortable header="Id"></Column>
         <Column field="name" sortable header="Name"></Column>
