@@ -20,13 +20,10 @@ namespace FitnessTracker.API.Controllers
             _mapper = mapper;
         }
         [HttpPost(Name = "AddExercise")]
-        public async Task<IActionResult> AddExercise([FromBody] string name)
+        public async Task<IActionResult> AddExercise(CreateExerciseRequest request)
         {
-            Exercise exercise = new()
-            {
-                Name = name,
-            };
-            await _context.Exercises.AddAsync(exercise);
+            var newExercise = _mapper.Map<Exercise>(request);
+            await _context.Exercises.AddAsync(newExercise);
             await _context.SaveChangesAsync();
             return Ok();
         }

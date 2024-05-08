@@ -8,16 +8,17 @@ import { Toast } from "primereact/toast";
 import React from "react";
 import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
+import { InputTextarea } from "primereact/inputtextarea";
 
 export default function ExercisesPage() {
   let emptyExercise: Exercise = {
     id: 0,
     name: "",
-    description: "",
+    description: undefined,
   };
 
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [newExerciseName, setNewExerciseName] = useState<string>("");
+  const [newExercise, setNewExercise] = useState<Exercise>(emptyExercise);
   const [exerciseDialog, setExerciseDialog] = useState(false);
 
   const toast = useRef<Toast>(null);
@@ -36,6 +37,7 @@ export default function ExercisesPage() {
   };
 
   const hideDialog = () => {
+    setNewExercise(emptyExercise);
     setExerciseDialog(false);
   };
 
@@ -52,27 +54,38 @@ export default function ExercisesPage() {
     }
   };
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debugger;
+  //TODO add generic parameter for exercise property
+  const onNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = (e.target && e.target.value) || "";
+    let _temp = { ...newExercise };
+    _temp.name = val;
 
-    setNewExerciseName(e.target.value);
+    setNewExercise(_temp);
+  };
+  const onDescriptionInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const val = (e.target && e.target.value) || "";
+    let _temp = { ...newExercise };
+    _temp.description = val;
+
+    setNewExercise(_temp);
   };
 
   const saveExercise = () => {
     setExerciseDialog(false);
     createNewExercise();
-    setNewExerciseName("");
+    setNewExercise(emptyExercise);
   };
   const createNewExercise = async () => {
-    const result = await createExercise(newExerciseName!);
+    const result = await createExercise(newExercise!);
     if (result) {
       fetchExercises();
     } else {
       toast.current!.show({
         severity: "error",
         summary: "Error",
-        detail: "Failed to delete exercise",
+        detail: "Failed to add exercise",
       });
     }
   };
@@ -144,10 +157,20 @@ export default function ExercisesPage() {
           <label htmlFor="name">Name</label>
           <InputText
             id="name"
-            value={newExerciseName}
-            onChange={(e) => onInputChange(e)}
+            value={newExercise.name}
+            onChange={(e) => onNameInputChange(e)}
             required
             autoFocus
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="description">Description</label>
+          <InputTextarea
+            id="description"
+            value={newExercise.description}
+            onChange={(e) => onDescriptionInputChange(e)}
+            rows={3}
+            cols={20}
           />
         </div>
       </Dialog>

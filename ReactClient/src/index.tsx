@@ -21,14 +21,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/HomePage",
-  //   element: <HomePage />,
-  // },
-  // {
-  //   path: "/Exercises",
-  //   element: <ExercisesPage />,
-  // },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);

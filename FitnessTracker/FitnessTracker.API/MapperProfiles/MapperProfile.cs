@@ -9,6 +9,7 @@ namespace FitnessTracker.API.MapperProfiles
         public MapperProfile()
         {
             CreateMap<Exercise, ExerciseResponse>();
+            CreateMap<CreateExerciseRequest, Exercise>();
         }
     }
 }
