@@ -133,7 +133,17 @@ export default function ExercisesPage() {
         className="p-button-success mr-2"
         onClick={addExercise}
       />
-      <DataTable value={exercises} tableStyle={{ minWidth: "50rem" }}>
+      <DataTable
+        value={exercises}
+        tableStyle={{ minWidth: "50rem" }}
+        resizableColumns
+        columnResizeMode="fit"
+        showGridlines
+        paginator
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25]}
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      >
         <Column field="id" sortable header="Id"></Column>
         <Column field="name" sortable header="Name"></Column>
         <Column field="description" header="Description"></Column>
