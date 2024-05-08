@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import NotFoundPage from "./NotFoundPage";
-import ExercisesPage from "./ExercisesPage";
-import HomePage from "./HomePage";
+import NotFoundPage from "./Pages/NotFoundPage";
+import ExercisesPage from "./Pages/ExercisesPage";
+import HomePage from "./Pages/HomePage";
 
 const router = createBrowserRouter([
   {

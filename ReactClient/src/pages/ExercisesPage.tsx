@@ -1,15 +1,19 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useState, useEffect, useRef } from "react";
-import { createExercise, deleteExercise, getExercises } from "./FetchService";
-import { Exercise } from "./types/interfaces";
+import {
+  createExercise,
+  deleteExercise,
+  getExercises,
+} from "../Api/FetchService";
+import { Exercise } from "../types/interfaces";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import React from "react";
 import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
-import "./ExercisesPage.css";
+import "../styles/ExercisesPage.css";
 
 export default function ExercisesPage() {
   let emptyExercise: Exercise = {

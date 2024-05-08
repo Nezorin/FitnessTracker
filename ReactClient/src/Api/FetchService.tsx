@@ -1,5 +1,5 @@
-import { API_BASE_URL } from "../config";
-import { Exercise } from "./types/interfaces";
+import { API_BASE_URL } from "../../config";
+import { Exercise } from "../types/interfaces";
 
 export async function getExercises(): Promise<Exercise[]> {
   const response = await fetch(`${API_BASE_URL}/GetExercises`);
@@ -15,13 +15,11 @@ export async function deleteExercise(id: number): Promise<boolean> {
   return response.ok;
 }
 
-export async function createExercise(
-  newExerciseName: string
-): Promise<boolean> {
+export async function createExercise(exercise: Exercise): Promise<boolean> {
   const response = await fetch(`${API_BASE_URL}/AddExercise`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newExerciseName),
+    body: JSON.stringify(exercise),
   });
   return response.ok;
 }
