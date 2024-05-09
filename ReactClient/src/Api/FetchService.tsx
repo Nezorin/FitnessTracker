@@ -23,3 +23,15 @@ export async function createExercise(exercise: Exercise): Promise<boolean> {
   });
   return response.ok;
 }
+
+export async function updateExercise(exercise: Exercise): Promise<boolean> {
+  const response = await fetch(
+    `${API_BASE_URL}/UpdateExercise/${exercise.id}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(exercise),
+    }
+  );
+  return response.ok;
+}

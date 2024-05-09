@@ -5,7 +5,8 @@ import {
   createExercise,
   deleteExercise,
   getExercises,
-} from "../Api/FetchService";
+  updateExercise,
+} from "../api/FetchService";
 import { Exercise } from "../types/interfaces";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
@@ -26,7 +27,7 @@ export default function ExercisesPage() {
   const [newExercise, setNewExercise] = useState<Exercise>(emptyExercise);
   const [exerciseDialog, setExerciseDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState<string>();
-
+  const [isEditMode, setIsEditMode] = useState<boolean>();
   const toast = useRef<Toast>(null);
 
   const fetchExercises = async () => {
@@ -39,6 +40,7 @@ export default function ExercisesPage() {
   }, []);
 
   const addExercise = () => {
+    setIsEditMode(false);
     setExerciseDialog(true);
   };
 
@@ -58,6 +60,12 @@ export default function ExercisesPage() {
         detail: "Failed to delete exercise",
       });
     }
+  };
+
+  const handleEditClick = async (exercise: Exercise) => {
+    setIsEditMode(true);
+    setNewExercise(exercise);
+    setExerciseDialog(true);
   };
 
   //TODO add generic parameter for exercise property
@@ -80,11 +88,29 @@ export default function ExercisesPage() {
 
   const saveExercise = () => {
     setExerciseDialog(false);
-    createNewExercise();
+    if (isEditMode) {
+      updateExistingExercise();
+    } else {
+      createNewExercise();
+    }
     setNewExercise(emptyExercise);
   };
+
   const createNewExercise = async () => {
     const result = await createExercise(newExercise!);
+    if (result) {
+      fetchExercises();
+    } else {
+      toast.current!.show({
+        severity: "error",
+        summary: "Error",
+        detail: "Failed to add exercise",
+      });
+    }
+  };
+
+  const updateExistingExercise = async () => {
+    const result = await updateExercise(newExercise!);
     if (result) {
       fetchExercises();
     } else {
@@ -133,7 +159,7 @@ export default function ExercisesPage() {
         <Button
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success mr-2"
-          onClick={() => handleDeleteClick(rowData.id)}
+          onClick={() => handleEditClick(rowData)}
         />
         <Button
           icon="pi pi-trash"

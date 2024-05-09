@@ -34,21 +34,18 @@ namespace FitnessTracker.API.Controllers
             return _mapper.Map<IEnumerable<ExerciseResponse>>(await _context.Exercises.ToListAsync());
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateExerciseName(int id, string newName)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateExercise([FromRoute]int id, UpdateExerciseRequest request)
         {
-            if (string.IsNullOrEmpty(newName))
-            {
-                return BadRequest("New name cannot be null or empty");
-            }
-
-            var exercise = await _context.Exercises.FindAsync(id);
-            if (exercise == null)
+            var entitytoUpdate = await _context.Exercises.FindAsync(id);
+            if (entitytoUpdate == null)
             {
                 return NotFound();
             }
 
-            exercise.Name = newName;
+            entitytoUpdate.Name = request.Name;
+            entitytoUpdate.Description = request.Description;
+            _context.Entry(entitytoUpdate).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();
