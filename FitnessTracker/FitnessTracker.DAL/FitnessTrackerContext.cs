@@ -9,8 +9,8 @@ namespace FitnessTracker.DAL
         {
         }
         public DbSet<Exercise> Exercises { get; set; }
-        public DbSet<ExerciseSet> ExerciseSets { get; set; }
-        public DbSet<WorkoutSession> WorkoutSessions { get; set; }
+        public DbSet<WorkoutTemplate> WorkoutTemplates { get; set; }
+        public DbSet<ExerciseWorkoutTemplate> ExerciseWorkoutTemplates { get; set; }
 
     }
 }
