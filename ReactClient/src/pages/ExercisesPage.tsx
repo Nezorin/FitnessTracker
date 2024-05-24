@@ -50,10 +50,10 @@ export default function ExercisesPage() {
   };
 
   const handleDeleteClick = async (id: number) => {
-    const result = await deleteExercise(id);
-    if (result) {
+    try{
+      await deleteExercise(id);
       setExercises(exercises.filter((exercise) => exercise.id !== id));
-    } else {
+    } catch(error){
       toast.current!.show({
         severity: "error",
         summary: "Error",
@@ -97,10 +97,10 @@ export default function ExercisesPage() {
   };
 
   const createNewExercise = async () => {
-    const result = await createExercise(newExercise!);
-    if (result) {
+    try {
+      await createExercise(newExercise!);
       fetchExercises();
-    } else {
+    } catch (error) {
       toast.current!.show({
         severity: "error",
         summary: "Error",
@@ -110,14 +110,14 @@ export default function ExercisesPage() {
   };
 
   const updateExistingExercise = async () => {
-    const result = await updateExercise(newExercise!);
-    if (result) {
+    try {
+      await updateExercise(newExercise!);
       fetchExercises();
-    } else {
+    } catch (error) {
       toast.current!.show({
         severity: "error",
         summary: "Error",
-        detail: "Failed to add exercise",
+        detail: "Failed to update exercise",
       });
     }
   };

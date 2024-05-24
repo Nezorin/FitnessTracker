@@ -3,28 +3,31 @@ import { Exercise } from "../types/interfaces";
 
 export async function getExercises(): Promise<Exercise[]> {
   const response = await fetch(`${API_BASE_URL}/GetExercises`);
-  const data = (await response.json()) as Exercise[];
-  console.log(data);
+  const data = await response.json() as Exercise[];
   return data;
 }
 
-export async function deleteExercise(id: number): Promise<boolean> {
+export async function deleteExercise(id: number): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/DeleteExercise/${id}`, {
     method: "DELETE",
   });
-  return response.ok;
+  if (!response.ok) {
+    throw new Error('Failed to delete exercise');
+  }
 }
 
-export async function createExercise(exercise: Exercise): Promise<boolean> {
+export async function createExercise(exercise: Exercise): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/AddExercise`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(exercise),
   });
-  return response.ok;
+  if (!response.ok) {
+    throw new Error('Failed to create exercise');
+  }
 }
 
-export async function updateExercise(exercise: Exercise): Promise<boolean> {
+export async function updateExercise(exercise: Exercise): Promise<void> {
   const response = await fetch(
     `${API_BASE_URL}/UpdateExercise/${exercise.id}`,
     {
@@ -33,5 +36,7 @@ export async function updateExercise(exercise: Exercise): Promise<boolean> {
       body: JSON.stringify(exercise),
     }
   );
-  return response.ok;
+  if (!response.ok) {
+    throw new Error('Failed to update exercise');
+  }
 }
